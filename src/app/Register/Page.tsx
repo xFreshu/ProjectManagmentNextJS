@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -6,13 +8,19 @@ import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 
 const { Title } = Typography;
 
+interface IRegisterData {
+  username: string;
+  password: string;
+  email: string;
+}
+
 const Page = () => {
   const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<IRegisterData>();
   const router = useRouter();
 
   const onRegister = (data: {
@@ -24,7 +32,7 @@ const Page = () => {
     setTimeout(() => {
       console.log("Registered with: ", data);
       setLoading(false);
-      router.push("/login"); // Redirect to login after successful registration
+      router.push("/login");
     }, 1500);
   };
 

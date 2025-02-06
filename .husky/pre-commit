@@ -1,5 +1,7 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npm run lint
+# Run lint-staged
+npx lint-staged
+# Run prettier
 npm run format
