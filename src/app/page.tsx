@@ -1,8 +1,9 @@
 "use client";
 
+import "@ant-design/v5-patch-for-react-19";
 import { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { redirect } from "next/navigation";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { redirect, useRouter } from "next/navigation";
 import { Form, Input, Button, Card, Typography } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 
@@ -13,25 +14,23 @@ interface ILoginData {
   password: string;
 }
 
-const Page = () => {
-  const [loading, setLoading] = useState(false);
+const Login = () => {
   const {
-    register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm<ILoginData>();
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
-  const onLogin = (data: { username: string; password: string }) => {
+  const onLogin: SubmitHandler<ILoginData> = (data) => {
+    console.log("Dane logowania:", data);
     setLoading(true);
-    setTimeout(() => {
-      console.log("Logged in with: ", data);
-      setLoading(false);
-    }, 1500);
+    redirect("/dashboard");
   };
 
   const navigateToRegister = () => {
-    redirect("/register");
-    return null;
+    router.push("/register");
   };
 
   return (
@@ -46,25 +45,39 @@ const Page = () => {
     >
       <Card style={{ width: 400, textAlign: "center" }}>
         <Title level={2}>Logowanie</Title>
-        <form onSubmit={handleSubmit(onLogin)} style={{ marginBottom: "1rem" }}>
+        <form onSubmit={handleSubmit(onLogin)}>
           <Form.Item
             validateStatus={errors.username ? "error" : ""}
             help={errors.username && "Podaj nazwę użytkownika!"}
           >
-            <Input
-              {...register("username", { required: true })}
-              prefix={<UserOutlined />}
-              placeholder="Nazwa użytkownika"
+            <Controller
+              name="username"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  prefix={<UserOutlined />}
+                  placeholder="Nazwa użytkownika"
+                />
+              )}
             />
           </Form.Item>
           <Form.Item
             validateStatus={errors.password ? "error" : ""}
             help={errors.password && "Podaj hasło!"}
           >
-            <Input.Password
-              {...register("password", { required: true })}
-              prefix={<LockOutlined />}
-              placeholder="Hasło"
+            <Controller
+              name="password"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <Input.Password
+                  {...field}
+                  prefix={<LockOutlined />}
+                  placeholder="Hasło"
+                />
+              )}
             />
           </Form.Item>
           <Form.Item>
@@ -81,4 +94,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default Login;

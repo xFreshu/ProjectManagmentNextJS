@@ -88,7 +88,7 @@ const Page = () => {
             </Button>
           </Form.Item>
         </form>
-        <Button type="link" onClick={() => router.push("/login")}>
+        <Button type="link" onClick={() => router.push("/")}>
           Masz już konto? Zaloguj się
         </Button>
       </Card>

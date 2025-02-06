@@ -12,5 +12,6 @@ module.exports = {
     "prettier/prettier": "error",
     "@typescript-eslint/no-unused-vars": ["error"],
     "react/react-in-jsx-scope": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
   },
 };
